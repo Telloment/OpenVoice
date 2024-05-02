@@ -144,13 +144,15 @@ def get_se(audio_path, vc_model, target_dir='processed', vad=True):
     # if os.path.isdir(audio_path):
     #     wavs_folder = audio_path
 
+    print(f'Processing {audio_path}')
     if vad:
         wavs_folder = split_audio_vad(audio_path, target_dir=target_dir, audio_name=audio_name)
     else:
         wavs_folder = split_audio_whisper(audio_path, target_dir=target_dir, audio_name=audio_name)
 
+    print(f'Extracting speaker embeddings from {len(glob(f"{wavs_folder}/*.wav"))} segments')
     audio_segs = glob(f'{wavs_folder}/*.wav')
     if len(audio_segs) == 0:
         raise NotImplementedError('No audio segments found!')
-
+    print('extracting speaker embeddings...')
     return vc_model.extract_se(audio_segs, se_save_path=se_path), audio_name
