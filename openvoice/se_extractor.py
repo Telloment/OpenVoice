@@ -130,12 +130,12 @@ def hash_numpy_array(audio_path):
     return base64_value.decode('utf-8')[:16].replace('/', '_^')
 
 
-def get_se(audio_path, vc_model, target_dir='processed', vad=True):
+def get_se(audio_path, vc_model, key, target_dir='processed', vad=True):
     device = vc_model.device
     version = vc_model.version
     print("OpenVoice version:", version)
 
-    audio_name = f"{os.path.basename(audio_path).rsplit('.', 1)[0]}_{version}_{hash_numpy_array(audio_path)}"
+    audio_name = f"{os.path.basename(audio_path).rsplit('.', 1)[0]}_{version}_{key}"
     se_path = os.path.join(target_dir, audio_name, 'se.pth')
 
     # if os.path.isfile(se_path):
