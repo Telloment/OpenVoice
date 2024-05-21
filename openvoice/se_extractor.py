@@ -132,20 +132,23 @@ def get_se(audio_path, vc_model, target_dir='processed', vad=True):
     print("OpenVoice version:", version)
 
     audio_name = f"{os.path.basename(audio_path).rsplit('.', 1)[0]}"
+    print(f"Processing {audio_name}")
     se_path = os.path.join(target_dir, 'se.pth')
-
     # if os.path.isfile(se_path):
     #     se = torch.load(se_path).to(device)
     #     return se, audio_name
     # if os.path.isdir(audio_path):
     #     wavs_folder = audio_path
-    
+
+    print(f"Splitting audio {audio_path}")
     if vad:
         wavs_folder = split_audio_vad(audio_path, target_dir=target_dir, audio_name=audio_name)
     else:
         wavs_folder = split_audio_whisper(audio_path, target_dir=target_dir, audio_name=audio_name)
-    
+    print(f"Extracting SE from {wavs_folder}")
     audio_segs = glob(f'{wavs_folder}/*.wav')
+    #print audio segs len
+    print(f"Number of audio segments: {len(audio_segs)}")
     if len(audio_segs) == 0:
         raise NotImplementedError('No audio segments found!')
     
