@@ -19,17 +19,12 @@ model = None
 def split_audio_whisper(audio_path, audio_name, target_dir='processed'):
     global model
     if model is None:
-        print("Loading Whisper model")
         model = WhisperModel(model_size, device="cpu", compute_type="float32")
-        print("Whisper model loaded")
-
-    print(f"Splitting audio {audio_path}")
     audio = AudioSegment.from_file(audio_path)
     max_len = len(audio)
 
     target_folder = os.path.join(target_dir, audio_name)
-
-    print("Transcribing audio")
+    
     segments, info = model.transcribe(audio_path, beam_size=5, word_timestamps=True)
     segments = list(segments)    
 
@@ -43,7 +38,6 @@ def split_audio_whisper(audio_path, audio_name, target_dir='processed'):
     start_time = None
     
     for k, w in enumerate(segments):
-        print(f"Processing segment {k+1}/{len(segments)}")
         # process with the time
         if k == 0:
             start_time = max(0, w.start)
