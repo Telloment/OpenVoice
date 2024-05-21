@@ -131,8 +131,8 @@ def get_se(audio_path, vc_model, target_dir='processed', vad=True):
     version = vc_model.version
     print("OpenVoice version:", version)
 
-    audio_name = f"{os.path.basename(audio_path).rsplit('.', 1)[0]}_{version}_{hash_numpy_array(audio_path)}"
-    se_path = os.path.join(target_dir, audio_name, 'se.pth')
+    audio_name = f"{os.path.basename(audio_path).rsplit('.', 1)[0]}"
+    se_path = os.path.join(target_dir, 'se.pth')
 
     # if os.path.isfile(se_path):
     #     se = torch.load(se_path).to(device)
